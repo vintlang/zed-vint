@@ -10,7 +10,6 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
-    [$.call_expression, $.member_expression],
     [$.block, $.object_literal],
   ],
 

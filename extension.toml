@@ -1,11 +1,11 @@
-id = "zed-vint"
+id = "vint"
 name = "zed-vint"
-description = "zed's vintlang language support"
-version = "0.0.1"
+description = "VintLang language support for Zed"
+version = "0.1.0"
 schema_version = 1
 authors = ["Tachera Sasi"]
 repository = "https://github.com/vintlang/zed-vint"
 
-
-
-
+[grammars.vint]
+repository = "https://github.com/vintlang/tree-sitter-vint"
+commit = "replace-with-actual-commit-hash"
