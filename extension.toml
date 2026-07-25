@@ -1,6 +1,6 @@
 id = "zed-vint"
 name = "zed-vint"
-description = "zeds vintlang language support"
+description = "zed's vintlang language support"
 version = "0.0.1"
 schema_version = 1
 authors = ["Tachera Sasi"]
