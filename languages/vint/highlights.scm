@@ -10,14 +10,12 @@
 (identifier) @variable
 
 (call_expression
-  function: (identifier) @function)
-
+  function: (call_expression) @function)
 (call_expression
-  function: (member_expression
-    property: (identifier) @function.method))
+  function: (member_expression) @function.method)
 
-(function_expression
-  name: (identifier) @function)
+(variable_declaration
+  value: (function_expression) @function)
 
 ((identifier) @constant
   (#match? @constant "^[A-Z][A-Z0-9_]+$"))
@@ -58,28 +56,18 @@
 ] @keyword
 
 [
-  "=>"
-] @operator
-
-[
   "="
   "+="
   "-="
   "*="
   "/="
   "%="
-] @operator
-
-[
   "=="
   "!="
   "<"
   ">"
   "<="
   ">="
-] @operator
-
-[
   "&&"
   "||"
   "!"
@@ -87,25 +75,19 @@
   "^"
   "&"
   "~"
-] @operator
-
-[
   "+"
   "-"
   "*"
   "/"
   "%"
   "**"
-] @operator
-
-[
   "++"
   "--"
+  "?"
+  ":"
 ] @operator
 
 [
-  "?"
-  ":"
   "."
   ","
   ";"
