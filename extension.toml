@@ -8,4 +8,4 @@ repository = "https://github.com/vintlang/zed-vint"
 
 [grammars.vint]
 repository = "https://github.com/vintlang/tree-sitter-vint"
-commit = "replace-with-actual-commit-hash"
+commit = "3d71dc3b09e5b5e4680ed1108d2f3c7fd50b1dc3"
