@@ -11,7 +11,7 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.call_expression, $.member_expression],
-
+    [$.block, $.object_literal],
   ],
 
   rules: {
@@ -48,11 +48,11 @@ module.exports = grammar({
     continue_statement: _ => 'continue',
     throw_statement: $ => seq('throw', $._expression),
 
-    if_statement: $ => seq(
+    if_statement: $ => prec.right(seq(
       'if', '(', $._expression, ')', $._statement,
       optional(seq('elif', '(', $._expression, ')', $._statement)),
       optional(seq('else', $._statement)),
-    ),
+    )),
 
     for_statement: $ => seq(
       'for', optional(seq($.identifier, 'in')), $._expression, $._statement,
@@ -72,11 +72,11 @@ module.exports = grammar({
     case_clause: $ => seq('case', $._expression, ':', repeat($._statement)),
     default_clause: $ => seq('default', ':', repeat($._statement)),
 
-    try_statement: $ => seq(
+    try_statement: $ => prec.right(seq(
       'try', $._statement,
       optional($.catch_clause),
       optional($.finally_clause),
-    ),
+    )),
 
     catch_clause: $ => seq('catch', '(', $.identifier, ')', $._statement),
     finally_clause: $ => seq('finally', $._statement),
@@ -84,7 +84,7 @@ module.exports = grammar({
     defer_statement: $ => seq('defer', $._expression),
     go_statement: $ => seq('go', $._expression),
 
-    expression_statement: $ => seq($._expression, optional(';')),
+    expression_statement: $ => prec.right(seq($._expression, optional(';'))),
 
     block: $ => seq('{', repeat($._statement), '}'),
 
@@ -148,13 +148,12 @@ module.exports = grammar({
     ),
 
     unary_expression: $ => choice(
-      prec(11, seq(choice('!', '-', '~'), $.unary_expression)),
+      prec(11, seq(choice('!', '-', '~', '++', '--'), $.unary_expression)),
       $.update_expression,
     ),
 
     update_expression: $ => choice(
-      prec(12, seq($.update_expression, choice('++', '--'))),
-      prec(12, seq(choice('++', '--'), $.update_expression)),
+      prec.left(12, seq($.update_expression, choice('++', '--'))),
       $.call_expression,
     ),
 
@@ -191,7 +190,6 @@ module.exports = grammar({
     ),
 
     function_expression: $ => seq(
-      optional('async'),
       'func',
       '(',
       optional(commaSep($.identifier)),
@@ -202,7 +200,7 @@ module.exports = grammar({
     async_expression: $ => prec(16, seq('async', $._expression)),
     await_expression: $ => prec(16, seq('await', $._expression)),
 
-    channel_literal: $ => seq('chan', optional(seq('(', $._expression, ')'))),
+    channel_literal: $ => seq('chan', '(', optional($._expression), ')'),
 
     array_literal: $ => seq('[', optional(commaSep($._expression)), ']'),
 
